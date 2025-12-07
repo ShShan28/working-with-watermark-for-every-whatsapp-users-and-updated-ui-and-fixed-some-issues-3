@@ -1,0 +1,247 @@
+/* Reset & base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f0f2f5;
+  color: #2c3e50;
+}
+
+/* App Layout */
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #075e54;
+  color: #e0f7fa;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.sidebar .brand {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #ffffff;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: #e0f7fa;
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background-color: #128c7e;
+}
+
+.sidebar .muted {
+  font-size: 0.75rem;
+  color: #b2dfdb;
+  margin-top: auto;
+  line-height: 1.3;
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.main-header {
+  margin-bottom: 1rem;
+}
+
+.main-header h2 {
+  font-size: 1.4rem;
+  color: #075e54;
+  font-weight: 600;
+}
+
+/* Views */
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+/* Cards */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+}
+
+/* Form Styles */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  color: #2c3e50;
+}
+
+input.form-control,
+textarea.form-control,
+select.form-control {
+  border-radius: 8px;
+  border: 1px solid #cfd8dc;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+  outline: none;
+  border-color: #25d366;
+  box-shadow: 0 0 0 0.2rem rgba(37, 211, 102, 0.2);
+}
+
+.form-text {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}
+
+/* Buttons */
+button.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+button.btn-primary {
+  background-color: #25d366;
+  border-color: #25d366;
+  color: #fff;
+}
+
+button.btn-primary:hover {
+  background-color: #1ebe57;
+  border-color: #1ebe57;
+}
+
+button.btn-outline-primary {
+  border-color: #25d366;
+  color: #25d366;
+}
+
+button.btn-outline-primary:hover {
+  background-color: #25d366;
+  color: #fff;
+}
+
+button.btn-outline-secondary {
+  border-color: #95a5a6;
+  color: #95a5a6;
+}
+
+button.btn-outline-secondary:hover {
+  background-color: #95a5a6;
+  color: #fff;
+}
+
+/* Small Text */
+small.muted {
+  font-size: 0.75rem;
+  color: #b2dfdb;
+}
+
+/* Lists and Contacts */
+#contactsList,
+#bulkContactsList,
+#scheduleContactsList,
+#templatesList,
+#logsTable,
+#bulkPreview,
+#scheduleList {
+  margin-top: 0.5rem;
+}
+
+#contactsList div,
+#bulkContactsList div,
+#scheduleContactsList div,
+#templatesList div {
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid #ecf0f1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#contactsList div:hover,
+#bulkContactsList div:hover,
+#scheduleContactsList div:hover,
+#templatesList div:hover {
+  background-color: #e0f7fa;
+  border-radius: 6px;
+}
+
+/* Scrollbar */
+.view-container {
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.view-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.view-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.15);
+  border-radius: 3px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    gap: 0.3rem;
+  }
+
+  .main {
+    padding: 1rem;
+  }
+}
+.app-footer {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+}

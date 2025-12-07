@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WhatsApp PDF Sender — Dashboard</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h3 class="brand">WA PDF Sender</h3>
+      <nav>
+        <button class="nav-btn active" data-view="send"><i class="bi bi-send-fill me-1"></i> Send</button>
+        <button class="nav-btn" data-view="bulk"><i class="bi bi-people-fill me-1"></i> Bulk</button>
+        <button class="nav-btn" data-view="scheduled"><i class="bi bi-clock-fill me-1"></i> Scheduled</button>
+        <button class="nav-btn" data-view="contacts"><i class="bi bi-person-lines-fill me-1"></i> Contacts</button>
+        <button class="nav-btn" data-view="logs"><i class="bi bi-journal-text me-1"></i> Logs</button>
+        <button class="nav-btn" data-view="templates"><i class="bi bi-card-text me-1"></i> Templates</button>
+        <div class="spacer"></div>
+        <small class="muted d-block mb-1">Instance: <span id="instanceId">instance153584</span></small>
+        <small class="muted d-block">Sender: <span id="senderNumber">+94711314627</span></small>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <header class="main-header d-flex justify-content-between align-items-center mb-3">
+        <h2 id="viewTitle">Send PDF/Image/Message</h2>
+      </header>
+
+      <div class="view-container">
+
+        <!-- Send View -->
+        <section id="view-send" class="view active">
+          <div class="card p-4 mb-4">
+            <form id="sendForm" onsubmit="return false;">
+              <div class="mb-3">
+                <label class="form-label">Recipient number (international)</label>
+                <input type="text" id="singleNumber" class="form-control" placeholder="+94123456789" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Send mode</label>
+                <div class="d-flex gap-3 flex-wrap">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sendMode" id="modeBoth" value="both" checked>
+                    <label class="form-check-label" for="modeBoth">Message + File</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sendMode" id="modeMsg" value="message">
+                    <label class="form-check-label" for="modeMsg">Message Only</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="sendMode" id="modeFile" value="file">
+                    <label class="form-check-label" for="modeFile">File Only</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Short message (optional)</label>
+                <input type="text" id="singleMessage" class="form-control" placeholder="Optional message text" maxlength="300" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">File (PDF or Image)</label>
+                <input type="file" id="singleFile" accept="application/pdf,image/*" class="form-control" />
+                <div class="form-text">Max 10 MB. PDF or Image allowed.</div>
+              </div>
+
+              <div class="d-flex gap-2 flex-wrap mt-3">
+                <button type="button" id="sendSingleBtn" class="btn btn-success"><i class="bi bi-send-fill me-1"></i> Send</button>
+                <button type="button" id="saveContactBtn" class="btn btn-outline-secondary"><i class="bi bi-person-plus-fill me-1"></i> Save Contact</button>
+              </div>
+
+              <div id="singleResult" class="mt-3"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Bulk View -->
+        <section id="view-bulk" class="view">
+          <div class="card p-4 mb-4">
+            <h5>Bulk Send</h5>
+            <div class="mb-3">
+              <a href="#" id="toggleBulkContacts" class="small text-decoration-underline" onclick="toggleContacts('bulkContactsListContainer', this); return false;">
+                ➕ Select saved contacts (optional)
+              </a>
+              <div id="bulkContactsListContainer" style="display:none;">
+                <div id="bulkContactsList" class="border rounded p-2" style="max-height:120px; overflow:auto;">
+                  <div id="bulkSelectedContacts" class="small text-muted">Click to select contacts</div>
+                </div>
+                <div class="form-text small">Use <code>{name}</code> in message to personalize.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Paste numbers (one per line) OR upload CSV</label>
+              <textarea id="bulkList" class="form-control" rows="5" placeholder="+94123456789"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Or upload CSV file</label>
+              <input type="file" id="bulkCsv" accept=".csv,text/csv" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Message (optional)</label>
+              <input type="text" id="bulkMessage" class="form-control" placeholder="Use {name} to personalize" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">File (optional)</label>
+              <input type="file" id="bulkFile" accept="application/pdf,image/*" class="form-control" />
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap mb-2">
+              <button id="previewBulkBtn" class="btn btn-outline-secondary"><i class="bi bi-eye-fill me-1"></i> Preview</button>
+              <button id="sendBulkBtn" class="btn btn-success"><i class="bi bi-send-fill me-1"></i> Send All</button>
+              <div class="form-text small">Rate-limited: 1 message / 1.2s by default.</div>
+            </div>
+
+            <div id="bulkPreview" class="mt-3"></div>
+          </div>
+        </section>
+
+        <!-- Scheduled View -->
+        <section id="view-scheduled" class="view">
+          <div class="card p-4 mb-4">
+            <h5>Scheduled Daily Send</h5>
+
+            <div class="mb-3">
+              <a href="#" id="toggleScheduleContacts" class="small text-decoration-underline" onclick="toggleContacts('scheduleContactsListContainer', this); return false;">
+                ➕ Select saved contacts (optional)
+              </a>
+              <div id="scheduleContactsListContainer" style="display:none;">
+                <div id="scheduleContactsList" class="border rounded p-2" style="max-height:120px; overflow:auto;">
+                  <div id="scheduleSelectedContacts" class="small text-muted">Click to select contacts</div>
+                </div>
+                <div class="form-text small">Use <code>{name}</code> in message to personalize.</div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Schedule time (HH:MM)</label>
+              <input type="time" id="scheduleTime" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Recipients</label>
+              <textarea id="scheduleRecipients" class="form-control" rows="3" placeholder="+94123456789"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Message (optional)</label>
+              <input id="scheduleMessage" class="form-control" placeholder="Message to send (use {name})" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">PDF / Image (optional)</label>
+              <input type="file" id="scheduleFile" accept="application/pdf,image/*" class="form-control" />
+              <div class="form-text" id="scheduleFileLabel">No file selected</div>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap mb-2">
+              <button id="saveScheduleBtn" class="btn btn-success"><i class="bi bi-save-fill me-1"></i> Save Schedule</button>
+              <button id="sendScheduleNowBtn" class="btn btn-outline-success"><i class="bi bi-send-fill me-1"></i> Send Now</button>
+            </div>
+
+            <div id="scheduleList" class="mt-3"></div>
+          </div>
+        </section>
+
+        <!-- Contacts View -->
+        <section id="view-contacts" class="view">
+          <div class="card p-4">
+            <h5>Contacts</h5>
+            <div class="row g-2 mb-3">
+              <div class="col-md-5"><input id="contactName" class="form-control" placeholder="Contact Name" /></div>
+              <div class="col-md-5"><input id="contactPhone" class="form-control" placeholder="+94123456789" /></div>
+              <div class="col-md-2"><button id="addContactBtn" class="btn btn-success w-100"><i class="bi bi-person-plus-fill me-1"></i> Add</button></div>
+            </div>
+            <div id="contactsList"></div>
+          </div>
+        </section>
+
+        <!-- Logs View -->
+        <section id="view-logs" class="view">
+          <div class="card p-4">
+            <h5>Logs</h5>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+              <button id="exportCsvBtn" class="btn btn-outline-secondary btn-sm"><i class="bi bi-file-earmark-spreadsheet-fill me-1"></i> Export CSV</button>
+              <button id="clearLogsBtn" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash-fill me-1"></i> Clear Logs</button>
+            </div>
+            <div id="logsTable" class="table-responsive"></div>
+          </div>
+        </section>
+
+        <!-- Templates View -->
+        <section id="view-templates" class="view">
+          <div class="card p-4">
+            <h5>Templates</h5>
+            <div class="row g-2 mb-3">
+              <div class="col-md-9"><input id="templateText" class="form-control" placeholder="Template Text" /></div>
+              <div class="col-md-3"><button id="saveTplBtn" class="btn btn-success w-100"><i class="bi bi-save-fill me-1"></i> Save</button></div>
+            </div>
+            <div id="templatesList"></div>
+          </div>
+        </section>
+
+      </div>
+      <footer class="app-footer text-center mt-4 mb-2">
+  <small class="text-muted">&copy; <span id="currentYear"></span> WA PDF Sender. All rights reserved Sh.</small>
+</footer>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Dark mode toggle
+    const darkBtn = document.getElementById('darkModeToggle');
+    darkBtn.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    // Navigation switch
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-view');
+        views.forEach(v => v.classList.remove('active'));
+        document.getElementById('view-' + target).classList.add('active');
+        document.getElementById('viewTitle').textContent = btn.textContent.trim();
+      });
+    });
+  </script>
+</body>
+</html>
