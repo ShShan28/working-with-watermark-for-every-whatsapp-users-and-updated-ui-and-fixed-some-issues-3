@@ -7,6 +7,12 @@ pip install Flask
 pip install Pillow
 pip install PyPDF2 reportlab
 
+suppose above three commands didnt worked try below three commands copy and paste in that cmd C:\xampp\htdocs\WA-PDF-Sender
+
+python -m pip install Flask
+python -m pip install Pillow
+python -m pip install PyPDF2 reportlab
+
 you will seeing the output in cmd like these
 
 
@@ -134,3 +140,4 @@ Press CTRL+C to quit
 127.0.0.1 - - [07/Dec/2025 07:15:49] "POST /api/watermark_file HTTP/1.1" 200 -
 127.0.0.1 - - [07/Dec/2025 07:22:04] "OPTIONS /api/watermark_file HTTP/1.1" 200 -
 127.0.0.1 - - [07/Dec/2025 07:22:05] "POST /api/watermark_file HTTP/1.1" 200 -
+
